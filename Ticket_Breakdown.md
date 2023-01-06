@@ -65,6 +65,11 @@ Create a table in the Database provider using sql query - `create table <tablena
 
 1 hour
 
+#### Acceptance Criteria
+
+An engineer should be able to view a new table CUSTOMID in database and alse perform
+query on it.
+
 
 
 ### Ticket no. 2 : Create an endpoint getCustomIdByAgentAndFacility
@@ -79,27 +84,70 @@ This endpoint will take agent id , facility id and will return the customId labe
 #### Implementation
 
 In the body of the function query the table CUSTOMID to get a record where agentId, facilityId is as per the parameters
-If query succeeds return the lable of the returned agent object else return null
+If query succeeds return the label of the returned agent object else return null
 
 #### Time
 
-1 hour
+2 hour
+
+#### Acceptance Criteria
+
+- The function created should return a customId if it exists for an agent and facility
+- The function should return null if for an agent and facility custom id doesn't exist
 
 ### Ticket no. 3 : Update `generateReport` function to print customId for an agent if it exists
 <hr />
 
 So pass a new parameter to it - `facilityId` besides the list of shifts , it already takes (mentioned in question).
 
-Now there must a place where original database id of agent is printed in the function. There or before it , add an API call
+Now there must be a place where original database id of agent is printed in the function.So there or before it , add an API call
 
 to `getCustomIdByAgentAndFacility(agentId,facilityId)` and it this API returns something print that else , print original agentId with formatted colors / extra text  that "No Custom Id assigned".
 
+#### Implementation
 
-### Ticket no. 4 : CRUD operations or api for CUSTOMID table
+Pass `facilityId` parameter to `generateReport` wherever it is called.
+Find the agentId or similar variable being printed in the `generateReport` function.
+Before that call the getCustomIdByAgentAndFacility function to fetch custom id and print it if it exist else print original database id.
+
+#### Time
+
+1 hour
+
+#### Acceptance Criteria
+
+Facility should see custom id of an agent if it had created it.
+
+### Ticket no. 4 : Create and update operations or api for CUSTOMID table
 <hr />
 
-Create all the 4 APIs - create , read , update and delete a custom id.
+Create all the 3 APIs - create , update a custom id.
 This will be useful for Facility client , to provide it with CRUD ability forof customId for an agent.
+
+#### Implementation
+
+1. Add a POST api for creating a new custom id.
+It will take agentId, facilityId, and the label for customId.Then add an entry for the same in the DB.
+createCustomId(agentId, facilityId , label){
+    returns 200 on success , if error return error
+}
+2. Add a PUT api for updating a new custom id.
+It will take agentId, facilityId , and the new label.
+
+updateCustomId(agentId, facilityId , label){
+    returns 200 on success , if error return error
+}
+
+
+#### Time
+
+2 hour
+
+#### Acceptance Criteria
+
+- on hitting createCustomId API with correct parameters , it should create a correct entry in the CUSTOMID table
+- on hitting updateCustomId API with correct parameters , it should update the correct entry in the CUSTOMID table
+
 
 ### Ticket no. 5 : Update client UI of facilities to CRUD custom id against an agent
 <hr />
@@ -107,6 +155,27 @@ This will be useful for Facility client , to provide it with CRUD ability forof 
 In the client side application code where the agent information is shown to a facility who uses this application,
 
 add a HTML form to assign/update custom id to the agent.
+
+#### Implementation
+
+Where the card of Agent is shown in the client side application for Facility. There add a form
+to submit 1 field - customId against the agent.
+
+If the customId exists , it should be autopopulated in the field.
+
+In the API request it should send 2 more fields - agentId, facilityId.
+Agent id must be available in the agent card and facility id must be available as that application user belongs to a facility.
+
+Also based upon customId exists or not , send  a PUT request or POST request
+
+#### Time
+
+2 hour
+
+#### Acceptance Criteria
+
+Facility should be able to add / edit customId against any agent
+
 
 
 
