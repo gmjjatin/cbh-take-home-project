@@ -1,28 +1,44 @@
 const crypto = require("crypto");
 
-exports.deterministicPartitionKey = (event) => {
-  const TRIVIAL_PARTITION_KEY = "0";
-  const MAX_PARTITION_KEY_LENGTH = 256;
-  let candidate;
+const TRIVIAL_PARTITION_KEY = "0";
+const MAX_PARTITION_KEY_LENGTH = 256;
 
-  if (event) {
-    if (event.partitionKey) {
-      candidate = event.partitionKey;
-    } else {
-      const data = JSON.stringify(event);
-      candidate = crypto.createHash("sha3-512").update(data).digest("hex");
-    }
-  }
+/**
+ * Returns a deterministic partition key for the provided event.
+ * @param {any} event Event from which to determine the `partitionKey`
+ * @returns string of length not greater than MAX_PARTITION_KEY_LENGTH
+ */
+const deterministicPartitionKey = (event) => {
+  let partitionKey;
 
-  if (candidate) {
-    if (typeof candidate !== "string") {
-      candidate = JSON.stringify(candidate);
-    }
+  if (!event) return TRIVIAL_PARTITION_KEY
+
+  if (event.partitionKey) {
+    partitionKey = event.partitionKey;
   } else {
-    candidate = TRIVIAL_PARTITION_KEY;
+    const data = JSON.stringify(event);
+    partitionKey = createHash(data);
   }
-  if (candidate.length > MAX_PARTITION_KEY_LENGTH) {
-    candidate = crypto.createHash("sha3-512").update(candidate).digest("hex");
+
+  if (typeof partitionKey !== "string") {
+    partitionKey = JSON.stringify(partitionKey);
   }
-  return candidate;
+
+  if (partitionKey.length > MAX_PARTITION_KEY_LENGTH) {
+    partitionKey = createHash(partitionKey);
+  }
+
+  return partitionKey;
 };
+
+/**
+ * Returns a hash
+ * @param {string} key for which to create the hash
+ * @returns string 
+ */
+const createHash = (key) => crypto.createHash("sha3-512").update(key).digest("hex");
+
+exports.deterministicPartitionKey =  deterministicPartitionKey;
+exports.createHash =  createHash;
+exports.TRIVIAL_PARTITION_KEY =  TRIVIAL_PARTITION_KEY;
+exports.MAX_PARTITION_KEY_LENGTH =  MAX_PARTITION_KEY_LENGTH;

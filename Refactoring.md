@@ -9,3 +9,19 @@ You've been asked to refactor the function `deterministicPartitionKey` in [`dpk.
 You will be graded on the exhaustiveness and quality of your unit tests, the depth of your refactor, and the level of insight into your thought process provided by the written explanation.
 
 ## Your Explanation Here
+
+I changed the variable name candidate to partitionKey as that what the function returns.
+Then  added the event / parameter non existing condition at top and returned trivial key if its true.
+This enables to remove any check below for partitionKey not existing, thus that check is removed.
+
+I moved the constants out of the function as they need not be initialized again and again , as they have primitive value , besides it makes the function and test more flexible , as I used the same variables in test files instead of hardcoding. This follows DRY principle.
+
+Then I created a separate function for creating a hash and the same is used in test file.
+
+Then I also moved all the exports needed to the bottom.
+
+And finally added comments for the functions to make them more understandable.
+
+## Test screenshot
+
+![Test](/test.png)
