@@ -75,7 +75,7 @@ query on it.
 ### Ticket no. 2 : Create an endpoint getCustomIdByAgentAndFacility
 <hr />
 
-This endpoint will take agent id , facility id and will return the customId label if exists in the CUSTOMID table else it will return null.
+This endpoint will take agent id , facility id and will return the customId label if it exists in the CUSTOMID table else it will return null.
 
 `getCustomIdByAgentAndFacility(agentId,facilityId){
     returns customId or null
@@ -83,8 +83,8 @@ This endpoint will take agent id , facility id and will return the customId labe
 
 #### Implementation
 
-In the body of the function query the table CUSTOMID to get a record where agentId, facilityId is as per the parameters
-If query succeeds return the label of the returned agent object else return null
+In the body of the function, query the table CUSTOMID to get a record where agentId, facilityId is as per the parameters.
+If query succeeds return the label of the returned agent object else return null.
 
 #### Time
 
@@ -102,7 +102,7 @@ So pass a new parameter to it - `facilityId` besides the list of shifts , it alr
 
 Now there must be a place where original database id of agent is printed in the function.So there or before it , add an API call
 
-to `getCustomIdByAgentAndFacility(agentId,facilityId)` and it this API returns something print that else , print original agentId with formatted colors / extra text  that "No Custom Id assigned".
+to `getCustomIdByAgentAndFacility(agentId,facilityId)` and if this API returns something print that else print original agentId with formatted colors / extra text  that "No Custom Id assigned".
 
 #### Implementation
 
@@ -122,7 +122,7 @@ Facility should see custom id of an agent if it had created it.
 <hr />
 
 Create all the 3 APIs - create , update a custom id.
-This will be useful for Facility client , to provide it with CRUD ability forof customId for an agent.
+This will be useful for Facility client , to provide it with CRUD ability of customId for an agent.
 
 #### Implementation
 
